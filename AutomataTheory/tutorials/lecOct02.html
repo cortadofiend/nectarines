@@ -1,0 +1,443 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- saved from url=(0069)http://condor.depaul.edu/glancast/444class/docs/lecOct02.html#slide16 -->
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;
+      charset=windows-1252">
+    <title></title>
+    <link rel="stylesheet" type="text/css"
+      href="./lecOct02_files/lectures.css">
+    <style type="text/css" id="internalStyle">
+div.fig p {
+font-size: smaller;
+font-weight: bold;
+}
+table.transition {
+border-collapse: collapse;
+font-size: larger;
+
+}
+
+table.transition td {
+border-style: solid;
+border-width: thin;
+text-align: center;
+padding: 5px;
+}
+table.transition td.col1 {
+border-style: none;
+}
+.lg {
+font-size: larger;
+font-size: xx-large;
+}
+div.answer em {
+color: black;
+}
+body {
+font-family: Verdana;
+}
+code {
+font-size: larger;
+}
+
+table.wide {
+border-style: solid;
+border-width: thin;
+border-collapse: collapse;
+margin-left: 1ex;
+}
+table.wide td {
+padding-left: 3ex;
+padding-right: 3ex;
+}
+
+</style>
+  </head>
+  <body class="lecture">
+    <h2> GNFAs </h2>
+    <h3>Example from <small><small>http://condor.depaul.edu/glancast/444class/docs/</small></small></h3>
+    <p>A Generalized Nondeterministic Finite Automaton is similar to an
+      NFA but the transition function takes a state and a <em>regular
+        expression in the alphabet</em> instead of a state and an
+      alphabet element.</p>
+    <div class="fig" style="margin-left: 30pt;">
+      <p><img src="./lecOct02_files/gnfa1.gif" alt="A generalized NFA
+          for strings containing 1101"> </p>
+      <p>A GNFA for strings in {1,0} that contain the substring "1101".</p>
+    </div>
+    <p>The idea is that in state <code>q<sub>0</sub></code> the
+      transition to state q<sub>1</sub> can be taken if the next input <em>matches</em>
+      the regular expression <code>1101</code>.</p>
+    <p>The formal definition is given (on page 73) by:</p>
+    <div class="answer">
+      <p>A <em>generalized nondeterministic finite automaton</em> is a
+        5-tuple, (Q,&#8721;, &#948;, q<sub>start</sub>, q<sub>accept</sub>), where</p>
+      <ol>
+        <li>Q is the finite set of states,</li>
+        <li>&#8721; is the input alphabet</li>
+        <li>&#948; : (Q - {q<sub>accept</sub>} x (Q - { q<sub>start</sub> })
+          &#8594; <em>R</em> is the transition function, where <em>R</em> is
+          the set of all regular expressions over &#8721;</li>
+        <li>q<sub>start</sub> is the start state</li>
+        <li>q<sub>accept</sub> is the accept state</li>
+      </ol>
+    </div>
+    <p>Note that there is only one accept state. However, this is no
+      real restriction for a nondetrministic automaton. (Why?)</p>
+    <p>On the other hand, the transition function is defined on a
+      different arguments than is the case for an ordinary NFA.</p>
+    <h2>GNFA Transition Function Example</h2>
+    <p>The transition function, <b>&#948;</b>, for the example GNFA:</p>
+    <p><img src="./lecOct02_files/gnfa1.gif" alt="The example GNFA"></p>
+    <p>is</p>
+    <table class="transition">
+      <!-- one of (tbody tr) --> <tbody>
+        <tr>
+          <!-- one of (td th) --> <th>&nbsp;&nbsp;</th>
+          <th>q<sub>1</sub></th>
+          <th>q<sub>2</sub></th>
+          <th>&nbsp;&nbsp;&nbsp;q<sub>3</sub>&nbsp;&nbsp;&nbsp;</th>
+        </tr>
+        <tr>
+          <!-- one of (td th) --> <td class="col1">q<sub>0</sub></td>
+          <td>&#949;</td>
+          <td class="lg">&#8960;</td>
+          <td class="lg">&#8960;</td>
+        </tr>
+        <tr>
+          <!-- one of (td th) --> <td class="col1">q<sub>1</sub></td>
+          <td>(0 | 1)</td>
+          <td>1101</td>
+          <td class="lg">&#8960;</td>
+        </tr>
+        <tr>
+          <!-- one of (td th) --> <td class="col1">q<sub>2</sub></td>
+          <td class="lg">&#8960;</td>
+          <td>(0 | 1)</td>
+          <td>&#949;</td>
+        </tr>
+      </tbody>
+    </table>
+    <h2>Language of a GNFA</h2>
+    <p>The definition of the language of a GNFA is technically different
+      than that of an NFA because the transition function is defined
+      differently. However, the idea is really similar, but extended to
+      allow regular expressions on the transitions.</p>
+    <p>The formal definition is given by (page 73):</p>
+    <div class="answer">
+      <p>A GNFA accepts a string <code>w</code> in &#8721;<sup>*</sup> if w =
+        w<sub>1</sub>w<sub>2</sub>...w<sub>k</sub>, where each w<sub>i</sub>
+        is in &#8721;<sup>*</sup> and a sequence of states q<sub>0</sub>, q<sub>1</sub>,
+        ..., q<sub>k</sub> exists such that</p>
+      <ol>
+        <li>q<sub>0</sub> is the start state</li>
+        <li>q<sub>k</sub> is the accept state</li>
+        <li>for each <em>i</em>, <em>w<sub>i</sub></em> &#8714; L(R<sub>i</sub>)
+          where R<sub>i</sub> = &#948;(q<sub>i-1</sub>, q<sub>i</sub>); that
+          is, where R<sub>i</sub> is the expression on the arrow from q<sub>i-1</sub>
+          to q<sub>i</sub>.</li>
+      </ol>
+    </div>
+    <h2>Example String Accepted by GNFA <br>
+    </h2>
+    <p>The string 0011011 is accepted by</p>
+    <p><img src="./lecOct02_files/gnfa1.gif" alt="Example GNFA"></p>
+    <p>If 0011011 is partitioned into blocks w<sub>1</sub>=&#949; w<sub>2</sub>=0
+
+
+
+
+      w<sub>3</sub>=0 w<sub>4</sub>=1101 w<sub>5</sub>=1 w<sub>6</sub>=&#949;;
+
+
+
+
+      that is,</p>
+    <blockquote> 0011011 = &#949; 0 0 1101 1 &#949;</blockquote>
+    <p>then </p>
+    <div class="answer">
+      <table style="text-align: center;">
+        <!-- one of (tbody tr) --> <tbody>
+          <tr>
+            <!-- one of (td th) --> <td>&nbsp;</td>
+            <td>State</td>
+            <td>Input</td>
+            <td>Next</td>
+          </tr>
+          <tr>
+            <!-- one of (td th) --> <td>w<sub>1</sub>=&#949; &#8714; L(&#948;(q<sub>0</sub>,
+              q<sub>1</sub>))</td>
+            <td>q<sub>0</sub></td>
+            <td> w<sub>1</sub></td>
+            <td>q<sub>1</sub></td>
+          </tr>
+          <tr>
+            <!-- one of (td th) --> <td>w<sub>2</sub>=0 &#8714; L(&#948;(q<sub>1</sub>,
+              q<sub>1</sub>))</td>
+            <td>q<sub>1</sub></td>
+            <td> w<sub>2</sub></td>
+            <td>q<sub>1</sub></td>
+          </tr>
+          <tr>
+            <!-- one of (td th) --> <td>w<sub>3</sub>=0 &#8714; L(&#948;(q<sub>1</sub>,
+              q<sub>1</sub>))</td>
+            <td>q<sub>1</sub></td>
+            <td> w<sub>3</sub></td>
+            <td>q<sub>1</sub></td>
+          </tr>
+          <tr>
+            <!-- one of (td th) --> <td>w<sub>4</sub>=1101 &#8714; L(&#948;(q<sub>1</sub>,
+              q<sub>2</sub>))</td>
+            <td>q<sub>1</sub></td>
+            <td> w<sub>4</sub></td>
+            <td>q<sub>2</sub></td>
+          </tr>
+          <tr>
+            <!-- one of (td th) --> <td>w<sub>5</sub>=1 &#8714; L(&#948;(q<sub>2</sub>,
+              q<sub>2</sub>))</td>
+            <td>q<sub>2</sub></td>
+            <td> w<sub>5</sub></td>
+            <td>q<sub>2</sub></td>
+          </tr>
+          <tr>
+            <!-- one of (td th) --> <td>w<sub>6</sub>=&#949; &#8714; L(&#948;(q<sub>2</sub>,
+              q<sub>3</sub>))</td>
+            <td>q<sub>2</sub></td>
+            <td> w<sub>6</sub></td>
+            <td>q<sub>3</sub></td>
+          </tr>
+        </tbody>
+      </table>
+      <p> For example, w<sub>1</sub>=&#949; &#8714; L(&#948;(q<sub>0</sub>, q<sub>1</sub>))
+
+
+
+
+        means for state q<sub>0</sub> and input w<sub>1</sub>, next
+        state is q<sub>1</sub></p>
+    </div>
+    <h2>Converting an NFA to a GNFA</h2>
+    <p>An NFA can be converted to an equivalent GNFA by</p>
+    <div class="answer">
+      <ol>
+        <li>Adding a new start state with an &#949; transition to the old
+          start state.</li>
+        <li>Adding a new accepting state and adding &#949; transitions from
+          all old accepting states to the new one.</li>
+        <li>Definining the transition function &#948;<sup>'</sup> for the
+          GNFA in terms of the transition function &#948; for the NFA by
+          <p>&#948;<sup>'</sup>(q<sub>i</sub>, q<sub>j</sub>) = a if and only
+            if &#948;(q<sub>i</sub>, a) = q<sub>j</sub></p>
+        </li>
+      </ol>
+    </div>
+    <h2>Example conversion of NFA to GNFA</h2>
+    <div> <img src="./lecOct02_files/dfa2gnfa.gif" alt="NFA">
+      <p>Steps 1 and 2 require adding a new start state and a new
+        accepting state. Step 3 require no changes in the diagram except
+        labeling the transitions out of the new start state and into the
+        new accepting state. </p>
+      <p><img src="./lecOct02_files/dfa2gnfa2.gif" alt="NFA to GNFA"></p>
+    </div>
+    <h2>Eliminating a state in an GNFA</h2>
+    <p>Any state except the start state and the accept state of a GNFA
+      can be eliminated to obtain a new equivalent GNFA with one fewer
+      states.</p>
+    <div>
+      <p>For example, to eliminate state q<sub>1</sub> in</p>
+      <img src="./lecOct02_files/dfa2gnfa2.gif" alt="Eliminate a state
+        in a gnfa">
+      <ol>
+        <li>replace each existing path q to q<sub>1</sub> to q<sup>'</sup>
+          by a path from q to q<sup>'</sup></li>
+        <li>Label the new path with a regular expression that describes
+          the strings that would cause a transition from state q to q<sub>1</sub>
+          to q<sup>'</sup></li>
+      </ol>
+      <p>There are 3 arrows coming into state q<sub>1</sub> from other
+        states: q<sub>0</sub>, q<sub>2</sub>, and q<sub>4</sub>.</p>
+      <p>If state q<sub>1</sub> is removed, paths must be replaced by
+        new transitions: </p>
+      <ol>
+        <li>q<sub>0</sub> to q<sub>2</sub></li>
+        <li>q<sub>2</sub> to q<sub>2</sub></li>
+        <li>q<sub>4</sub> to q<sub>2</sub></li>
+      </ol>
+    </div>
+    <h2>Determining the Regular Expression Labels</h2>
+    <div> <img src="./lecOct02_files/dfa2gnfa2.gif" alt="step2">
+      <p>Eliminating q<sub>1</sub>, what regular expressions are needed?</p>
+      <img src="./lecOct02_files/dfa2gnfa3.gif" alt="step2"> </div>
+    <h2>GNFA Regular Expression Labels</h2>
+    <p>Suppose q<sub>a</sub> is to be removed and</p>
+    <ol>
+      <li> the path being considered goes from q<sub>i</sub> to q<sub>a</sub>
+        to q<sub>j</sub>,</li>
+      <li>transition from q<sub>i</sub> to q<sub>a</sub> is labeled by
+        the regular expression <em>R<sub>ia</sub></em></li>
+      <li>transition from q<sub>a</sub> to q<sub>j</sub> is labeled by
+        the regular expression <em>R<sub>aj</sub></em></li>
+      <li>transition from q<sub>i</sub> to q<sub>j</sub> is labeled by
+        the regular expression <em>R<sub>ij</sub></em> (Note this may
+        be the empty regular expression, &#2205;)</li>
+    </ol>
+    <p>Then the path from q<sub>i</sub> to q<sub>j</sub> should be
+      labeled</p>
+    <pre>    R<sub>ia</sub>R<sub>aa</sub><sup>*</sup>R<sub>aj</sub> &#8746; R<sub>ij</sub>
+</pre>
+    <h2>Result</h2>
+    <div>
+      <p>Original NFA (converted to a GNFA):</p>
+      <img src="./lecOct02_files/dfa2gnfa2.gif" alt="">
+      <p>After eliminating state q<sub>1</sub>, recalculate labels for
+        paths that went through q<sub>1</sub>:</p>
+      <table class="wide">
+        <!-- one of (tbody tr) --> <tbody>
+          <tr>
+            <!-- one of (td th) --> <th>Path</th>
+            <th>Label<br>
+              Expression</th>
+            <th>Actual<br>
+              Label</th>
+          </tr>
+          <tr>
+            <!-- one of (td th) --> <td>q0 to q2</td>
+            <td>R<sub>01</sub><span>R<sub>11</sub></span><sup>*</sup>R<sub>12</sub>
+              &#8746; R<sub>02</sub></td>
+            <td>&#949;0*1 &#8746; empty = 0*1</td>
+          </tr>
+          <tr>
+            <!-- one of (td th) --> <td>q<sub>2</sub> to q<sub>2</sub></td>
+            <td>R<sub>21</sub><span>R<sub>11</sub></span><sup>*</sup>R<sub>12</sub>
+              &#8746; R<sub>22</sub> </td>
+            <td>00*1 &#8746; empty = 0<sup>+</sup>1</td>
+          </tr>
+          <tr>
+            <!-- one of (td th) --> <td>q<sub>4</sub> to q<sub>2</sub></td>
+            <td>R<sub>41</sub><span>R<sub>11</sub><sup>*</sup>R<sub>12</sub>
+                &#8746; R<sub>42</sub></span></td>
+            <td>00*1 &#8746; empty = 0<sup>+</sup>1</td>
+          </tr>
+        </tbody>
+      </table>
+      <img src="./lecOct02_files/dfa2gnfa4.gif" alt=""> </div>
+    <h2 style="clear: both;">Now the Theorem Again</h2>
+    <dl>
+      <!-- one of (dd dt) --> <dt>A language is regular if and only if
+        some regular expression describes it.</dt>
+      <dd>Proof requires two parts.</dd>
+      <dd>First Part: If a language is regular, then it is described by
+        some regular expression.</dd>
+      <dd>Second Part: If a language is described by some regular
+        expression, then it is a regular language.</dd>
+    </dl>
+    <h2>NFA to Regular Expression</h2>
+    <p>To show the first part, if we are given an NFA, we need to show
+      that there is a regular expression that describes exactly the
+      language of the NFA. </p>
+    <p>The construction of the regular expression begins with the NFA
+      and each step will eliminate one state of the NFA until the only
+      state(s) remaining are the start state and a final state.</p>
+    <h2>Complete Example: NFA to Regular Expression</h2>
+    <p>Exercise 1.16a</p>
+    <div><img src="./lecOct02_files/1_16a.gif" alt="">
+      <p>Convert this NFA to a regular expression that describes the
+        same language.</p>
+    </div>
+    <h2>Convert to GNFA</h2>
+    <p><img src="./lecOct02_files/1_16agnfa.gif" alt=""></p>
+    <p>Eliminate non-start, non-final state 1.</p>
+    <p>Recalculate labels for paths through state 1</p>
+    <table class="wide">
+      <!-- one of (tbody tr) --> <tbody>
+        <tr>
+          <!-- one of (td th) --> <th>Path</th>
+          <th>Label<br>
+            Expression</th>
+          <th>Actual<br>
+            Label</th>
+        </tr>
+        <tr>
+          <!-- one of (td th) --> <td>0 to 3</td>
+          <td>R<sub>01</sub><span>R<sub>11</sub></span><sup>*</sup>R<sub>13</sub>
+            &#8746; R<sub>03</sub></td>
+          <td>&#949;a*&#949; &#8746; empty = a*</td>
+        </tr>
+        <tr>
+          <!-- one of (td th) --> <td>0 to 2</td>
+          <td>R<sub>01</sub><span>R<sub>11</sub></span><sup>*</sup>R<sub>12</sub>
+            &#8746; R<sub>02</sub></td>
+          <td>&#949;a*(a|b) &#8746; empty = a*(a|b)</td>
+        </tr>
+        <tr>
+          <!-- one of (td th) --> <td>2 to 3</td>
+          <td>R<sub>21</sub><span>R<sub>11</sub></span><sup>*</sup>R<sub>13</sub>
+            &#8746; R<sub>23</sub></td>
+          <td>ba*&#949; &#8746; empty = ba*</td>
+        </tr>
+      </tbody>
+    </table>
+    <p><img src="./lecOct02_files/1_16as1.gif" alt=""></p>
+    <h2>Final Step: GNFA to Regular Expression</h2>
+    <p><img src="./lecOct02_files/1_16as1.gif" alt=""></p>
+    <p>Finally eliminate state 2. Only one path remains from 0 to 3.
+      Recalculate the label for the path through state 2.</p>
+    <table class="wide">
+      <!-- one of (tbody tr) --> <tbody>
+        <tr>
+          <!-- one of (td th) --> <th>Path</th>
+          <th>Label<br>
+            Expression</th>
+          <th>Actual<br>
+            Label</th>
+        </tr>
+        <tr>
+          <!-- one of (td th) --> <td>0 to 3</td>
+          <td>R<sub>02</sub><span>R<sub>22</sub></span><sup>*</sup>R<sub>23</sub>
+            &#8746; R<sub>03</sub></td>
+          <td>a*(a|b)&#949;<sup>*</sup>ba* &#8746; a* = a*(a|b)ba* | a*</td>
+        </tr>
+      </tbody>
+    </table>
+    <h2>Summary for NFA to Regular Expression Example<br>
+    </h2>
+    <p><img src="./lecOct02_files/1_16a.gif" alt=""></p>
+    <p>A regular expression that describes the same language as this NFA
+      is</p>
+    <pre class="answer">     a*(a|b)ba* | a*
+
+</pre>
+    <h2>Regular Expresssion to NFA</h2>
+    <p>To show that for any regular expression there is an NFA that
+      recognizes the same language described by the regular expression,
+      the proof describes a procedure for constructing the NFA from the
+      regular expression.</p>
+    <div class="answer">
+      <ol>
+        <li>Parse the regular expression into its parts based on the
+          regular expression operator precedence and parentheses used if
+          any to determine the operands of each operator.</li>
+        <li>star is highest, then concatenation, and union is lowest
+          precedence.</li>
+        <li>For each of the operators use the construction described in
+          showing the closure properties of regular languages to
+          construct an NFA for each operator and its operands.</li>
+      </ol>
+      <p>See Lemma 1.55 in the text.</p>
+    </div>
+    <p>Example regular expression</p>
+    <pre class="answer">   a(ba)*b &#8746; bab
+</pre>
+    <ol>
+      <li>Construct the NFA for (ba): concatenation of b and a</li>
+      <li>Construct the NFA for (ba)*: star of (1)</li>
+      <li>Construct the NFA for a(ba)*: concatenation of a and (2) </li>
+      <li>Construct the NFA for a(ba)*b: concatenation of (3) and b</li>
+      <li>Construct the NFA for ba: concatenation of b and a</li>
+      <li>Construct the NFA for bab: concatenation of 5 and b</li>
+      <li>Construct the NFA for a(ba)*b &#8746; bab: union of (4) and (6)</li>
+    </ol>
+    <br>
+  </body>
+</html>
